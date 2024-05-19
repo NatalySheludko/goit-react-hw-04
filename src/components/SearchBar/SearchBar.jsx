@@ -1,23 +1,29 @@
 import { Field, Formik, Form } from "formik";
 import css from "../SearchBar/SearchBar.module.css";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
-export default function SearchBar({ onSearch, onClick }) {
+export default function SearchBar({ onSearch }) {
   const [isActive, setIsActive] = useState(false);
 
   const handleInputClick = () => {
     setIsActive(true);
   };
 
+  const notify = () => toast.error("Error loading !");
+
   return (
     <div className={css.formWrap}>
       <header>
         <Formik
-          initialValues={({ query: "" })}
+          initialValues={{ query: "" }}
           onSubmit={(values, actions) => {
             onSearch(values.query);
-						actions.resetForm();
-						setIsActive(false);
+            if (!values.query.trim()) {
+              return notify();
+            }
+            actions.resetForm();
+            setIsActive(false);
           }}
         >
           <Form>
@@ -31,7 +37,7 @@ export default function SearchBar({ onSearch, onClick }) {
                 placeholder="Search images and photos"
                 onClick={handleInputClick}
               />
-              <button type="submit" className={css.reset} onClick={onClick}>     
+              <button type="submit" className={css.reset}>
                 <div className={css.handle}></div>
               </button>
             </div>

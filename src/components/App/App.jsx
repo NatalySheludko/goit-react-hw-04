@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import { getArticles } from "../Api/Api";
 import Loader from "../Loader/Loader";
-import toast from "react-hot-toast";
 import SearchBar from "../SearchBar/SearchBar";
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
@@ -51,30 +50,28 @@ export default function App() {
     setPage(page + 1);
   };
 
-  const notify = () => toast.error("Error loading !");
-
-  function isOpenModal(index) {
-    setSelectedImage(index);
+  function OpenModal(item) {
+    setSelectedImage(item);
     setModalIsOpen(true);
   }
 
-  function isCloseModal() {
+  function CloseModal() {
     setModalIsOpen(false);
     setSelectedImage();
   }
 
   return (
     <div>
-      <SearchBar onClick={notify} onSearch={handleSearch} />
+      <SearchBar onSearch={handleSearch} />
       {isError && <ErrorMessage />}
       {isLoading && <Loader />}
       {articles.length > 0 && (
-        <ImageGallery onClick={isOpenModal} items={articles} />
+        <ImageGallery onClick={OpenModal} items={articles} />
       )}
       {selectedImage && (
         <ImageModal
           item={selectedImage}
-          onClose={isCloseModal}
+          onClose={CloseModal}
           isOpen={modalIsOpen}
         />
       )}
