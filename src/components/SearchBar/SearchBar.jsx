@@ -18,10 +18,10 @@ export default function SearchBar({ onSearch }) {
         <Formik
           initialValues={{ query: "" }}
           onSubmit={(values, actions) => {
-            onSearch(values.query);
             if (!values.query.trim()) {
               return notify();
             }
+            onSearch(values.query);
             actions.resetForm();
             setIsActive(false);
           }}
